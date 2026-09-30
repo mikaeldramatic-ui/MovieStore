@@ -1,5 +1,6 @@
 import { NavLink, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
+import "./App.css";
 
 function Page({ title }) {
   return (
