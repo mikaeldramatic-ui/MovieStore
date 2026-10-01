@@ -26,6 +26,20 @@
   white-space: nowrap;
 }
 
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.app-nav a {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
 .app-nav a:hover,
 .app-nav a[aria-current="page"] {
   color: var(--color-text);

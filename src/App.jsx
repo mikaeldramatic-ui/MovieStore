@@ -11,20 +11,22 @@ function Page({ title }) {
 }
 
 export default function App() {
-  const cartCount = useSelector((state) => state.cart.items.lenght);
+  const cartCount = useSelector((state) => state.cart.items.length);
 
   return (
     <div className="app">
       <header className="app-header">
-        <NavLink to="/" className="logo">
+        <NavLink to="/" end className="logo">
           MovieStore
         </NavLink>
 
         <nav className="app-nav">
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/" end>
+            Home
+          </NavLink>
           <NavLink to="/movies">Movies</NavLink>
           <NavLink to="/library">Library</NavLink>
-          <NavLink to="/cart">Cart</NavLink>
+          <NavLink to="/cart">Cart {cartCount}</NavLink>
           <NavLink to="/profile">Profile</NavLink>
         </nav>
       </header>
@@ -32,10 +34,14 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Page title="Welcome to MovieStore" />} />
         <Route path="/movies" element={<Page title="Movies" />} />
+        <Route
+          path="/movies/:movieId"
+          element={<Page title="Movie details" />}
+        />
         <Route path="/library" element={<Page title="Library" />} />
         <Route path="/cart" element={<Page title="Cart" />} />
         <Route path="/profile" element={<Page title="My profile" />} />
-        <Route path="/*" element={<Page title="Page Cannot find" />} />
+        <Route path="*" element={<Page title="Page not found" />} />
       </Routes>
     </div>
   );
