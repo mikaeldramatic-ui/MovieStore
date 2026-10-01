@@ -1,6 +1,7 @@
 import { NavLink, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import HomePage from "./pages/HomePage.jsx";
+import MoviePage from "./pages/MoviePage.jsx";
 import "./App.css";
 
 function Page({ title }) {
@@ -34,7 +35,7 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/movies" element={<Page title="Movies" />} />
+        <Route path="/movies" element={<MoviePage />} />
         <Route
           path="/movies/:movieId"
           element={<Page title="Movie details" />}
