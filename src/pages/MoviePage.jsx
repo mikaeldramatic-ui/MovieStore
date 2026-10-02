@@ -47,7 +47,11 @@ export default function MoviePage() {
           <Link
             className={styles.searchResult}
             key={movie.id}
-            to={`/movies/${movie.id}`}
+            to={
+              query
+                ? `/movies/${movie.id}?query=${encodeURIComponent(query)}`
+                : `/movies/${movie.id}`
+            }
           >
             {movie.poster_path ? (
               <img
