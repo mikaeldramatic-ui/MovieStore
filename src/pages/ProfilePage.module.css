@@ -1,0 +1,56 @@
+.profilePage {
+  padding-top: 2rem;
+}
+
+.profileCard {
+  max-width: 640px;
+  margin-top: 2rem;
+  padding: 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #17181e;
+}
+
+.profileCard h2 {
+  margin-top: 0;
+}
+
+.profileCard p {
+  color: var(--color-text-muted);
+}
+
+.profileNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.profileLink {
+  display: inline-block;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  color: white;
+  background: var(--color-accent);
+  font-weight: 700;
+  text-decoration: none;
+  transition: filter 180ms ease;
+}
+
+.profileLink:hover {
+  filter: brightness(1.12);
+}
+
+@media (max-width: 600px) {
+  .profileCard {
+    padding: 1.25rem;
+  }
+
+  .profileNav {
+    flex-direction: column;
+  }
+
+  .profileLink {
+    text-align: center;
+  }
+}

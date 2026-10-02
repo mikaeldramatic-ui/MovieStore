@@ -2,6 +2,7 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import HomePage from "./pages/HomePage.jsx";
 import MoviePage from "./pages/MoviePage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 import MovieDetailsPage from "./pages/MovieDetailsPage.jsx";
 import "./App.css";
 
@@ -40,7 +41,7 @@ export default function App() {
         <Route path="/movies/:movieId" element={<MovieDetailsPage />} />
         <Route path="/library" element={<Page title="Library" />} />
         <Route path="/cart" element={<Page title="Cart" />} />
-        <Route path="/profile" element={<Page title="My profile" />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<Page title="Page not found" />} />
       </Routes>
     </div>
