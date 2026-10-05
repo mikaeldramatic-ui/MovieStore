@@ -1,4 +1,6 @@
 import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../features/cart/cartSlice.js";
 import useMovieDetails from "../hooks/useMovieDetails.js";
 import noPoster from "../assets/no_poster.svg";
 import styles from "./MovieDetailsPage.module.css";
@@ -7,6 +9,7 @@ export default function MovieDetailsPage() {
   const { movieId } = useParams();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("query");
+  const dispatch = useDispatch();
 
   const moviesUrl = searchQuery
     ? `/movies?query=${encodeURIComponent(searchQuery)}`
@@ -95,6 +98,22 @@ export default function MovieDetailsPage() {
       <p className={styles.overview}>
         {movie.overview || "No description available."}
       </p>
+
+      <div className={styles.cartActions}>
+        <button
+          type="button"
+          onClick={() => dispatch(addToCart({ movie, type: "buy" }))}
+        >
+          Buy Movie
+        </button>
+
+        <button
+          type="button"
+          onClick={() => dispatch(addToCart({ movie, type: "rent" }))}
+        >
+          Rent Movie
+        </button>
+      </div>
     </main>
   );
 }
