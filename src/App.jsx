@@ -5,6 +5,7 @@ import MoviePage from "./pages/MoviePage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import MovieDetailsPage from "./pages/MovieDetailsPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
+import LibraryPage from "./pages/LibraryPage.jsx";
 import "./App.css";
 
 function Page({ title }) {
@@ -40,7 +41,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/movies" element={<MoviePage />} />
         <Route path="/movies/:movieId" element={<MovieDetailsPage />} />
-        <Route path="/library" element={<Page title="Library" />} />
+        <Route path="/library" element={<LibraryPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<Page title="Page not found" />} />
