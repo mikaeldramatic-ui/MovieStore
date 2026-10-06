@@ -38,3 +38,46 @@ export async function getMovieDetails(movieId) {
 
     return response.json();
 }
+
+export async function getMovieGenres() {
+    const params = new URLSearchParams({
+        language: "en-US",
+        api_key: API_KEY,
+    });
+
+    const response = await fetch (
+        `${BASE_URL}/genre/movie/list?${params}`,
+    );
+
+    if (!response.ok) {
+        throw new Error("Could not load movie genres from TMDb");
+    }
+
+    const data = await response.json();
+    return data.genres;
+}
+
+export async function discoverMoviesByGenre(genreId = null) {
+    const params = new URLSearchParams({
+        include_adult: "false",
+        include_video: "false",
+        language: "en-US",
+        sort_by: "popularity.desc",
+        api_key: API_KEY,
+    });
+
+    if (genreId !== null) {
+        params.set("with_genres", String(genreId));
+    }
+
+    const response = await fetch (
+        `${BASE_URL}/discover/movie?${params}`,
+    );
+
+    if (!response.ok) {
+        throw new Error("Could not load movies for this genre from TMDb.");
+    }
+
+    const data = await response.json();
+    return data.results;
+}
