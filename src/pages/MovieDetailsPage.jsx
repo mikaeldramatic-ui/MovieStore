@@ -9,15 +9,26 @@ export default function MovieDetailsPage() {
   const { movieId } = useParams();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("query");
+  const searchGenreId = searchParams.get("genre");
   const dispatch = useDispatch();
   const libraryItems = useSelector((state) => state.library.items);
   const libraryItem = libraryItems.find(
     (item) => String(item.movie.id) === movieId,
   );
+  const moviesParams = new URLSearchParams();
 
-  const moviesUrl = searchQuery
-    ? `/movies?query=${encodeURIComponent(searchQuery)}`
-    : "/movies";
+  if (searchQuery) {
+    moviesParams.set("query", searchQuery);
+  }
+
+  if (searchGenreId) {
+    moviesParams.set("genre", searchGenreId);
+  }
+
+  const moviesUrl = `/movies${
+    moviesParams.toString() ? `?${moviesParams.toString()}` : ""
+  }`;
+
   const { movie, loading, error } = useMovieDetails(movieId);
 
   if (loading) {
