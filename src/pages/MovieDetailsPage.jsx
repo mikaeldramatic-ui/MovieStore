@@ -66,7 +66,14 @@ export default function MovieDetailsPage() {
     );
 
   return (
-    <main className={`page ${styles.movieDetailsPage}`}>
+    <main
+      className={`page ${styles.movieDetailsPage}`}
+      style={{
+        "--detail-background": movie.poster_path
+          ? `url("https://image.tmdb.org/t/p/w1280${movie.poster_path}")`
+          : "linear-gradient(135deg, #39344c, #161820)",
+      }}
+    >
       <Link className={styles.backLink} to={moviesUrl}>
         ← Back to movies
       </Link>
@@ -110,9 +117,11 @@ export default function MovieDetailsPage() {
         </div>
       </section>
 
-      <p className={styles.overview}>
-        {movie.overview || "No description available."}
-      </p>
+      <section className={styles.overviewCard}>
+        <p className={styles.overview}>
+          {movie.overview || "No description available."}
+        </p>
+      </section>
 
       {libraryItem ? (
         <p className={styles.libraryStatus} aria-live="polite">
