@@ -1,0 +1,46 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 2.5rem 1.5rem;
+  background: #0d0c12;
+  border-top: 1px solid var(--color-border);
+}
+
+.logo {
+  color: var(--color-text);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.copyright {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.infoLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.5rem;
+}
+
+.infoLink {
+  padding: 0;
+  color: var(--color-text-muted);
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.infoLink:hover,
+.infoLink:focus-visible {
+  color: var(--color-text);
+}
