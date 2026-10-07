@@ -6,6 +6,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import MovieDetailsPage from "./pages/MovieDetailsPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import LibraryPage from "./pages/LibraryPage.jsx";
+import Footer from "./components/Footer.jsx";
 import "./App.css";
 
 function Page({ title }) {
@@ -30,6 +31,8 @@ export default function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<Page title="Page not found" />} />
       </Routes>
+
+      <Footer />
     </div>
   );
 }
