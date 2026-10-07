@@ -1,4 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import useMovies from "../hooks/useMovies.js";
 import useMovieGenres from "../hooks/useMovieGenres.js";
 import styles from "./MoviePage.module.css";
@@ -36,10 +37,22 @@ export default function MoviePage() {
     detailParams.set("genre", selectedGenreId);
   }
 
+  const [hoveredMovie, setHoveredMovie] = useState(null);
+
+  const hoverBackground = hoveredMovie?.poster_path
+    ? `url("https://image.tmdb.org/t/p/w1280${hoveredMovie.poster_path}")`
+    : hoveredMovie
+      ? "linear-gradient(135deg, #39344c, #161820)"
+      : "none";
+
   const detailSearch = detailParams.toString();
 
   return (
-    <main className="page">
+    <main
+      className={`page ${styles.moviePage}`}
+      style={{ "--hover-background": hoverBackground }}
+      data-hover-active={hoveredMovie !== null}
+    >
       <h1>Movies</h1>
 
       {genresLoading && <p>Loading genres...</p>}
@@ -81,6 +94,10 @@ export default function MoviePage() {
             className={styles.searchResult}
             key={movie.id}
             to={`/movies/${movie.id}${detailSearch ? `?${detailSearch}` : ""}`}
+            onMouseEnter={() => setHoveredMovie(movie)}
+            onMouseLeave={() => setHoveredMovie(null)}
+            onFocus={() => setHoveredMovie(movie)}
+            onBlur={() => setHoveredMovie(null)}
           >
             {movie.poster_path ? (
               <img
