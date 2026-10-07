@@ -42,30 +42,6 @@ export default function MoviePage() {
     <main className="page">
       <h1>Movies</h1>
 
-      <label className={styles.searchLabel} htmlFor="movie-search">
-        Search for a movie
-      </label>
-
-      <input
-        id="movie-search"
-        className={styles.movieSearch}
-        type="search"
-        value={query}
-        onChange={(event) => {
-          const value = event.target.value;
-          const nextParams = new URLSearchParams(searchParams);
-
-          if (value) {
-            nextParams.set("query", value);
-          } else {
-            nextParams.delete("query");
-          }
-
-          setSearchParams(nextParams, { replace: true });
-        }}
-        placeholder="For example, Dune"
-      />
-
       {genresLoading && <p>Loading genres...</p>}
       {genresError && <p role="alert">{genresError}</p>}
 
