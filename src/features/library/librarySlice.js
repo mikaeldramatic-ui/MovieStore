@@ -11,11 +11,14 @@ const librarySlice = createSlice ({
             if (!alreadyOwned) {
                 state.items.push(newItem);
             }
-
             });
+        },
+
+        clearLibrary(state) {
+            state.items = [];
         },
     },
 });
 
-export const { addItemsToLibrary } = librarySlice.actions;
+export const { addItemsToLibrary, clearLibrary } = librarySlice.actions;
 export default librarySlice.reducer;
