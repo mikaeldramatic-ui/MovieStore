@@ -42,6 +42,6 @@ store.subscribe(() => {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify (store.getState()));
     } catch (error) {
-        console.error("Could not save MovieStore state, error");
+        console.error("Could not save MovieStore state:", error);
     }
 });
