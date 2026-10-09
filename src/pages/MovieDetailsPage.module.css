@@ -31,7 +31,7 @@
   border-radius: 999px;
   text-decoration: none;
   transition:
-    allcolor 180ms ease,
+    color 180ms ease,
     border-color 180ms ease,
     transform 180ms ease;
 }
@@ -143,6 +143,15 @@
 
 .cartActions button:hover {
   filter: brightness(1.12);
+}
+
+.cartStatus {
+  margin: 1rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.cartActions button.selectedCartAction {
+  background: #238b57;
 }
 
 .libraryStatus {

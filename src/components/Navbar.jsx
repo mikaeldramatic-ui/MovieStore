@@ -59,7 +59,9 @@ export default function Navbar() {
         </NavLink>
         <NavLink to="/movies">Movies</NavLink>
         <NavLink to="/library">Library</NavLink>
-        <NavLink to="/cart">Cart {cartCount}</NavLink>
+        <NavLink to="/cart">
+          Cart {cartCount > 0 && <span>{cartCount}</span>}
+        </NavLink>
         <NavLink to="/profile">Profile</NavLink>
       </nav>
 
