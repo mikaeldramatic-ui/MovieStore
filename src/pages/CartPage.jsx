@@ -2,7 +2,10 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { clearCart, removeFromCart } from "../features/cart/cartSlice.js";
-import { addItemsToLibrary } from "../features/library/librarySlice.js";
+import {
+  addItemsToLibrary,
+  removeExpiredRentals,
+} from "../features/library/librarySlice.js";
 import noPoster from "../assets/no_poster.svg";
 import styles from "./CartPage.module.css";
 
@@ -21,6 +24,7 @@ export default function CartPage() {
         ? { ...item, rentalExpiresAt: checkoutTime + RENTAL_PERIOD_MS }
         : item,
     );
+    dispatch(removeExpiredRentals(checkoutTime));
     dispatch(addItemsToLibrary(libraryItems));
     dispatch(clearCart());
     setShowConfirmation(false);

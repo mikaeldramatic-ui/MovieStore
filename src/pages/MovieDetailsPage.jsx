@@ -4,6 +4,7 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice.js";
 import useMovieDetails from "../hooks/useMovieDetails.js";
@@ -18,9 +19,24 @@ export default function MovieDetailsPage() {
   const searchQuery = searchParams.get("query");
   const searchGenreId = searchParams.get("genre");
   const dispatch = useDispatch();
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setNow(Date.now());
+    }, 1_000);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
+
   const libraryItems = useSelector((state) => state.library.items);
+
   const libraryItem = libraryItems.find(
-    (item) => String(item.movie.id) === movieId,
+    (item) =>
+      String(item.movie.id) === movieId &&
+      (item.type === "buy" ||
+        !item.rentalExpiresAt ||
+        item.rentalExpiresAt > now),
   );
   const cartItem = useSelector((state) =>
     state.cart.items.find((item) => String(item.movie.id) === movieId),
