@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { removeExpiredRentals } from "../features/library/librarySlice";
 import noPoster from "../assets/no_poster.svg";
 import styles from "./LibraryPage.module.css";
 
@@ -33,10 +34,23 @@ export default function LibraryPage() {
 
     return () => window.clearInterval(intervalId);
   }, []);
-
+  const dispatch = useDispatch();
   const items = useSelector((state) => state.library.items);
   const purchasedItems = items.filter((item) => item.type === "buy");
   const rentalItems = items.filter((item) => item.type === "rent");
+
+  useEffect(() => {
+    const hasExpiredRental = items.some(
+      (item) =>
+        item.type === "rent" &&
+        item.rentalExpiresAt &&
+        item.rentalExpiresAt <= now,
+    );
+
+    if (hasExpiredRental) {
+      dispatch(removeExpiredRentals(now));
+    }
+  }, [dispatch, items, now]);
 
   const renderMovieCards = (libraryItems) =>
     libraryItems.map((item) => (

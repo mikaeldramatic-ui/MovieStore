@@ -17,8 +17,22 @@ const librarySlice = createSlice ({
         clearLibrary(state) {
             state.items = [];
         },
+
+    removeExpiredRentals(state, action) {
+        const now= action.payload;
+
+        state.items = state.items.filter (
+            (item) =>
+                item.type !== "rent" ||
+            !item.rentalExpiresAt ||
+            item.rentalExpiresAt > now,
+        );
     },
+},
+
 });
 
-export const { addItemsToLibrary, clearLibrary } = librarySlice.actions;
+
+
+export const { addItemsToLibrary, clearLibrary, removeExpiredRentals } = librarySlice.actions;
 export default librarySlice.reducer;
