@@ -12,7 +12,7 @@ import styles from "./MovieDetailsPage.module.css";
 
 export default function MovieDetailsPage() {
   const location = useLocation();
-  const cameFromCart = location.state?.from === "/cart";
+  const returnPath = location.state?.from;
   const { movieId } = useParams();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("query");
@@ -39,7 +39,14 @@ export default function MovieDetailsPage() {
     moviesParams.toString() ? `?${moviesParams.toString()}` : ""
   }`;
 
-  const backUrl = cameFromCart ? "/cart" : moviesUrl;
+  const returnLabels = {
+    "/": "← Back to home",
+    "/library": "← Back to My Library",
+    "/cart": "← Back to cart",
+  };
+
+  const backUrl = returnLabels[returnPath] ? returnPath : moviesUrl;
+  const backLabel = returnLabels[returnPath] ?? "← Back to movies";
 
   const { movie, loading, error } = useMovieDetails(movieId);
 
@@ -87,7 +94,7 @@ export default function MovieDetailsPage() {
       }}
     >
       <Link className={styles.backLink} to={backUrl}>
-        {cameFromCart ? "← Back to cart" : "← Back to movies"}
+        {backLabel}
       </Link>
 
       <div className={styles.movieHeader}>

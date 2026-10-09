@@ -67,6 +67,7 @@ export default function HomePage() {
             <Link
               className={styles.primaryButton}
               to={`/movies/${featuredMovie.id}`}
+              state={{ from: "/" }}
             >
               View details
             </Link>
@@ -119,6 +120,7 @@ export default function HomePage() {
                 className={styles.movieCard}
                 key={movie.id}
                 to={`/movies/${movie.id}`}
+                state={{ from: "/" }}
               >
                 <div
                   className={styles.moviePoster}
