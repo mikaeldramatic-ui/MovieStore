@@ -44,6 +44,7 @@ export default function LibraryPage() {
         className={styles.libraryItem}
         key={item.movie.id}
         to={`/movies/${item.movie.id}`}
+        state={{ from: "/library" }}
       >
         <img
           className={styles.poster}
