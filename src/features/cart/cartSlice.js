@@ -6,11 +6,14 @@ const cartSlice = createSlice({
     reducers: {
         addToCart(state, action) {
             const { movie,type = 'rent' } = action.payload;
-            const alreadyAdded = state.items.some(
+            
+            const existingItem = state.items.find(
                 (item) => item.movie.id === movie.id,
             );
 
-            if (!alreadyAdded) {
+            if (existingItem) {
+                existingItem.type = type;
+            } else {
                 state.items.push({movie, type});
             }
         },

@@ -91,3 +91,9 @@
 .emptySection {
   color: var(--color-text-muted);
 }
+
+.rentalStatus {
+  margin: 0.35rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}

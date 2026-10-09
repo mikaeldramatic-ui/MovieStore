@@ -1,4 +1,9 @@
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice.js";
 import useMovieDetails from "../hooks/useMovieDetails.js";
@@ -6,6 +11,8 @@ import noPoster from "../assets/no_poster.svg";
 import styles from "./MovieDetailsPage.module.css";
 
 export default function MovieDetailsPage() {
+  const location = useLocation();
+  const cameFromCart = location.state?.from === "/cart";
   const { movieId } = useParams();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("query");
@@ -14,6 +21,9 @@ export default function MovieDetailsPage() {
   const libraryItems = useSelector((state) => state.library.items);
   const libraryItem = libraryItems.find(
     (item) => String(item.movie.id) === movieId,
+  );
+  const cartItem = useSelector((state) =>
+    state.cart.items.find((item) => String(item.movie.id) === movieId),
   );
   const moviesParams = new URLSearchParams();
 
@@ -28,6 +38,8 @@ export default function MovieDetailsPage() {
   const moviesUrl = `/movies${
     moviesParams.toString() ? `?${moviesParams.toString()}` : ""
   }`;
+
+  const backUrl = cameFromCart ? "/cart" : moviesUrl;
 
   const { movie, loading, error } = useMovieDetails(movieId);
 
@@ -74,8 +86,8 @@ export default function MovieDetailsPage() {
           : "linear-gradient(135deg, #39344c, #161820)",
       }}
     >
-      <Link className={styles.backLink} to={moviesUrl}>
-        ← Back to movies
+      <Link className={styles.backLink} to={backUrl}>
+        {cameFromCart ? "← Back to cart" : "← Back to movies"}
       </Link>
 
       <div className={styles.movieHeader}>
@@ -129,20 +141,36 @@ export default function MovieDetailsPage() {
           My Library
         </p>
       ) : (
-        <div className={styles.cartActions}>
-          <button
-            type="button"
-            onClick={() => dispatch(addToCart({ movie, type: "buy" }))}
-          >
-            Buy Movie
-          </button>
+        <div>
+          {cartItem && (
+            <p className={styles.cartStatus} role="status">
+              Added to cart: {cartItem.type === "buy" ? "purchase" : "rental"}.
+            </p>
+          )}
 
-          <button
-            type="button"
-            onClick={() => dispatch(addToCart({ movie, type: "rent" }))}
-          >
-            Rent Movie
-          </button>
+          <div className={styles.cartActions}>
+            <button
+              className={
+                cartItem?.type === "buy" ? styles.selectedCartAction : ""
+              }
+              type="button"
+              aria-pressed={cartItem?.type === "buy"}
+              onClick={() => dispatch(addToCart({ movie, type: "buy" }))}
+            >
+              Buy Movie
+            </button>
+
+            <button
+              className={
+                cartItem?.type === "rent" ? styles.selectedCartAction : ""
+              }
+              type="button"
+              aria-pressed={cartItem?.type === "rent"}
+              onClick={() => dispatch(addToCart({ movie, type: "rent" }))}
+            >
+              Rent Movie
+            </button>
+          </div>
         </div>
       )}
     </main>
