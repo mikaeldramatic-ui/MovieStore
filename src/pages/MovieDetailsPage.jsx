@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice.js";
+import useOmdbMovie from "../hooks/useOmdbMovie.js";
 import useMovieDetails from "../hooks/useMovieDetails.js";
 import noPoster from "../assets/no_poster.svg";
 import styles from "./MovieDetailsPage.module.css";
@@ -65,6 +66,11 @@ export default function MovieDetailsPage() {
   const backLabel = returnLabels[returnPath] ?? "← Back to movies";
 
   const { movie, loading, error } = useMovieDetails(movieId);
+  const {
+    omdbMovie,
+    loading: omdbLoading,
+    error: omdbError,
+  } = useOmdbMovie(movie?.external_ids?.imdb_id);
 
   if (loading) {
     return (
@@ -90,6 +96,8 @@ export default function MovieDetailsPage() {
     );
   }
 
+  const ratings = omdbMovie?.Ratings ?? [];
+
   const videos = movie.videos?.results ?? [];
   const trailer =
     videos.find(
@@ -99,6 +107,8 @@ export default function MovieDetailsPage() {
     videos.find(
       (video) => video.site === "YouTube" && video.type === "Trailer",
     );
+
+  const topCast = movie.credits?.cast?.slice(0, 4) ?? [];
 
   return (
     <main
@@ -150,12 +160,71 @@ export default function MovieDetailsPage() {
             <p className={styles.noTrailer}>No trailer available.</p>
           )}
         </div>
+
+        <aside className={styles.castCard} aria-labelledby="top-cast-title">
+          <h2 id="top-cast-title">Top Cast</h2>
+
+          {topCast.length > 0 ? (
+            <ul className={styles.castList}>
+              {topCast.map((actor) => (
+                <li
+                  className={styles.castItem}
+                  key={actor.cast_id ?? actor.credit_id ?? actor.id}
+                >
+                  {actor.profile_path ? (
+                    <img
+                      className={styles.castPhoto}
+                      src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                      alt=""
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className={styles.castPlaceholder} aria-hidden="true">
+                      {actor.name?.charAt(0) ?? "?"}
+                    </div>
+                  )}
+
+                  <div className={styles.castInfo}>
+                    <span>{actor.name}</span>
+                    {actor.character && <small>{actor.character}</small>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Cast information unavailable.</p>
+          )}
+        </aside>
       </section>
 
       <section className={styles.overviewCard}>
         <p className={styles.overview}>
           {movie.overview || "No description available."}
         </p>
+      </section>
+
+      <section className={styles.ratingsCard} aria-labelledby="ratings-title">
+        <div className={styles.ratingsHeader}>
+          <h2 id="ratings-title">Ratings &amp; info</h2>
+          <span className={styles.omdbBadge}>OMDb</span>
+        </div>
+
+        {omdbLoading ? (
+          <p>Loading ratings...</p>
+        ) : omdbError ? (
+          <p role="status">{omdbError}</p>
+        ) : ratings.length > 0 ? (
+          <ul className={styles.ratingsList}>
+            {ratings.map((rating) => (
+              <li key={rating.Source}>
+                <span>{rating.Source}</span>
+                <strong>{rating.Value}</strong>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No external ratings available.</p>
+        )}
       </section>
 
       {libraryItem ? (

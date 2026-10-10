@@ -67,12 +67,15 @@
   line-height: 1.2;
 }
 
-/* Poster and trailers */
+/* Poster, trailer, and cast */
 .movieDetails {
   display: grid;
-  grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+  grid-template-columns: minmax(180px, 260px) minmax(0, 1fr) minmax(
+      210px,
+      270px
+    );
   align-items: start;
-  gap: clamp(1.5rem, 4vw, 3rem);
+  gap: clamp(1.5rem, 2vw, 2rem);
 }
 
 .poster {
@@ -86,7 +89,7 @@
 
 .trailer {
   position: relative;
-  width: 80%;
+  width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border: 1px solid var(--color-border);
@@ -103,14 +106,18 @@
   border: 0;
 }
 
-/* Moviedescription and reserve text */
-.overviewCard {
-  max-width: 70ch;
-  margin-top: 1.5rem;
+/* Description and cast cards */
+.overviewCard,
+.castCard {
   padding: 1rem 1.5rem;
   background: rgb(23 24 30 / 85%);
   border: 1px solid var(--color-border);
   border-radius: 12px;
+}
+
+.overviewCard {
+  max-width: 70ch;
+  margin-top: 1.5rem;
 }
 
 .overview {
@@ -119,10 +126,126 @@
   line-height: 1.2;
 }
 
+.castCard {
+  min-width: 0;
+  align-self: start;
+}
+
+.castCard h2 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+}
+
+.castList {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.castItem {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.castPhoto,
+.castPlaceholder {
+  width: 52px;
+  height: 64px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.castPhoto {
+  object-fit: cover;
+}
+
+.castPlaceholder {
+  display: grid;
+  place-items: center;
+  color: var(--color-text-muted);
+  background: #272832;
+}
+
+.castInfo {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.castInfo span {
+  font-weight: 700;
+}
+
+.castInfo small {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  text-overflow: ellipsis;
+}
+
 .noTrailer {
   color: var(--color-text-muted);
 }
 
+/* OMDb ratings */
+.ratingsCard {
+  max-width: 70ch;
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgb(23 24 30 / 85%);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.ratingsHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.ratingsHeader h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.omdbBadge {
+  padding: 0.2rem 0.5rem;
+  color: var(--color-text-muted);
+  background: #272832;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+.ratingsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ratingsList li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ratingsList li span {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.ratingsList li strong {
+  color: var(--color-text);
+}
+
+/* Cart and library status */
 .cartActions {
   display: flex;
   flex-wrap: wrap;
@@ -165,8 +288,8 @@
   font-weight: 700;
 }
 
-/* Row content to small screens */
-@media (max-width: 720px) {
+/* Responsive layout */
+@media (max-width: 900px) {
   .movieDetails {
     grid-template-columns: 1fr;
   }

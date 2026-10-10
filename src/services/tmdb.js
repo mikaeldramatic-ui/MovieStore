@@ -25,7 +25,7 @@ export async function getMovieDetails(movieId) {
     const params = new URLSearchParams({
         language: "en-US",
         api_key: API_KEY,
-        append_to_response: "videos",
+        append_to_response: "videos,credits,external_ids",
     });
 
     const response = await fetch (
