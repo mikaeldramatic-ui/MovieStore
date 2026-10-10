@@ -11,6 +11,7 @@ import useOmdbMovie from "../hooks/useOmdbMovie.js";
 import useMovieDetails from "../hooks/useMovieDetails.js";
 import noPoster from "../assets/no_poster.svg";
 import styles from "./MovieDetailsPage.module.css";
+import { getMoviePrices } from "../services/moviePricing.js";
 
 export default function MovieDetailsPage() {
   const location = useLocation();
@@ -95,6 +96,8 @@ export default function MovieDetailsPage() {
       </main>
     );
   }
+
+  const moviePrices = getMoviePrices(movie.release_date);
 
   const ratings = omdbMovie?.Ratings ?? [];
 
@@ -247,9 +250,20 @@ export default function MovieDetailsPage() {
               }
               type="button"
               aria-pressed={cartItem?.type === "buy"}
-              onClick={() => dispatch(addToCart({ movie, type: "buy" }))}
+              onClick={() =>
+                dispatch(
+                  addToCart({
+                    movie,
+                    type: "buy",
+                    price: moviePrices?.buy,
+                  }),
+                )
+              }
+              disabled={!moviePrices}
             >
-              Buy Movie
+              {moviePrices
+                ? `Buy Movie · ${moviePrices.buy} kr`
+                : "Price unavailable"}
             </button>
 
             <button
@@ -258,9 +272,20 @@ export default function MovieDetailsPage() {
               }
               type="button"
               aria-pressed={cartItem?.type === "rent"}
-              onClick={() => dispatch(addToCart({ movie, type: "rent" }))}
+              onClick={() =>
+                dispatch(
+                  addToCart({
+                    movie,
+                    type: "rent",
+                    price: moviePrices?.rent,
+                  }),
+                )
+              }
+              disabled={!moviePrices}
             >
-              Rent Movie
+              {moviePrices
+                ? `Rent Movie · ${moviePrices.rent} kr`
+                : "Price unavailable"}
             </button>
           </div>
         </div>

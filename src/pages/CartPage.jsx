@@ -31,6 +31,9 @@ export default function CartPage() {
     setOrderComplete(true);
   }
 
+  const cartTotal = items.reduce((total, item) => total + (item.price ?? 0), 0);
+  const hasUnpricedItems = items.some((item) => typeof item.price !== "number");
+
   return (
     <main className={`page ${styles.cartPage}`}>
       <h1>My Cart</h1>
@@ -54,14 +57,22 @@ export default function CartPage() {
             {items.map((item) => (
               <li key={item.movie.id}>
                 {item.movie.title} —{" "}
-                {item.type === "buy" ? "Purchase" : "Rental"}
+                {item.type === "buy" ? "Purchase" : "Rental"} -{" "}
+                {item.price != null ? `${item.price} kr` : "Price unavailable"}
               </li>
             ))}
           </ul>
+          <p>
+            Total: {hasUnpricedItems ? "Price unavailable" : `${cartTotal} kr`}
+          </p>
 
           <p>This is a demo checkout. No payment will be made.</p>
 
-          <button type="button" onClick={handleConfirmCheckout}>
+          <button
+            type="button"
+            onClick={handleConfirmCheckout}
+            disabled={hasUnpricedItems}
+          >
             Confirm order
           </button>
 
@@ -102,6 +113,11 @@ export default function CartPage() {
                     </Link>
                   </h2>
                   <p>{item.type === "buy" ? "Purchase" : "Rental"}</p>
+                  <p>
+                    {item.price != null
+                      ? `${item.price} kr`
+                      : "Price unavailable"}
+                  </p>
                 </div>
 
                 <button
@@ -114,10 +130,15 @@ export default function CartPage() {
             ))}
           </section>
 
+          <p>
+            Total: {hasUnpricedItems ? "Price unavailable" : `${cartTotal} kr`}
+          </p>
+
           <button
             className={styles.checkoutButton}
             type="button"
             onClick={() => setShowConfirmation(true)}
+            disabled={hasUnpricedItems}
           >
             Continue to checkout
           </button>

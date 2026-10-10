@@ -5,7 +5,7 @@ const cartSlice = createSlice({
     initialState: { items: [] },
     reducers: {
         addToCart(state, action) {
-            const { movie,type = 'rent' } = action.payload;
+            const { movie,type = 'rent', price } = action.payload;
             
             const existingItem = state.items.find(
                 (item) => item.movie.id === movie.id,
@@ -13,8 +13,9 @@ const cartSlice = createSlice({
 
             if (existingItem) {
                 existingItem.type = type;
+                existingItem.price = price;
             } else {
-                state.items.push({movie, type});
+                state.items.push({movie, type, price});
             }
         },
         removeFromCart(state, action) {
