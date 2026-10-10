@@ -51,6 +51,7 @@ useEffect(() => {
           }
         } catch {
             if (!ignore) {
+                setMovies([]);
                 setError("Could not load movies. Please try again.");
             }
         } finally {
