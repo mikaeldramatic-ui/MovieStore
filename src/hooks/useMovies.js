@@ -23,49 +23,51 @@ useEffect(() => {
     let ignore = false;
     const trimmedQuery = query.trim();
 
-    const timeoutId = setTimeout(async () => {
+    async function loadMovies() {
         setLoading(true);
         setError("");
 
-                try {
-          let results;
+        try {
+            let results;
 
-          if (trimmedQuery) {
-            results = await searchMovies(trimmedQuery);
+            if (trimmedQuery) {
+                results = await searchMovies(trimmedQuery);
 
-            if (genreId !== null) {
-              results = results.filter((movie) =>
-                movie.genre_ids?.includes(Number(genreId)),
-              );
+                if (genreId !== null) {
+                    results = results.filter((movie) =>
+                        movie.genre_ids?.includes(Number(genreId)),
+                );
             }
-                    } else {
+        } else {
             results = await discoverMoviesByGenre(genreId);
-          }
-
-          if (!trimmedQuery && genreId === null) {
-            results = shuffleMovies(results);
-          }
-
-          if (!ignore) {
-            setMovies(results);
-          }
-        } catch {
-            if (!ignore) {
-                setMovies([]);
-                setError("Could not load movies. Please try again.");
-            }
-        } finally {
-            if (!ignore) {
-                setLoading(false);
-            }
         }
-    },
-    trimmedQuery ? 400 : 0,
-);
+
+        if (!trimmedQuery && genreId === null) {
+            results = shuffleMovies(results);
+        }
+
+        if (!ignore) {
+            setMovies(results);
+        }
+    } catch {
+        if (!ignore) {
+            setMovies([]);
+            setError("Could not load movies. Please try again.");
+        }
+    } finally {
+        if (!ignore) {
+            setLoading(false);
+        }
+    }
+}
+    const timeoutId = window.setTimeout (
+        loadMovies,
+        trimmedQuery ? 400 : 0,
+    );
 
 return () => {
     ignore = true;
-    clearTimeout(timeoutId);
+    window.clearTimeout(timeoutId);
 };
 }, [query, genreId]);
 

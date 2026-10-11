@@ -4,11 +4,9 @@
 
 .heroBanner {
   position: relative;
-  box-sizing: border-box;
   display: flex;
   align-items: end;
   height: 480px;
-  min-height: 480px;
   margin: 1.5rem 4vw 2.5rem;
   padding: clamp(1.5rem, 5vw, 4rem);
   overflow: hidden;
@@ -104,14 +102,7 @@
 }
 
 .primaryButton {
-  display: inline-block;
   margin-top: 1rem;
-  padding: 0.8rem 1.25rem;
-  border-radius: 8px;
-  color: white;
-  background: var(--color-accent);
-  font-weight: 700;
-  text-decoration: none;
 }
 
 .movieSection {
@@ -168,6 +159,8 @@
   border: 1px solid var(--color-border);
   border-radius: 12px;
   background: linear-gradient(145deg, #b5aecf, #383b46 70%);
+  background-position: center;
+  background-size: cover;
   transition:
     transform 180ms ease,
     border-color 180ms ease;
@@ -178,7 +171,7 @@
   border-color: var(--color-accent);
 }
 
-.moviePoster span {
+.moviePoster > span:not(.moreDetails) {
   font-size: 1.05rem;
   font-weight: 700;
 }
@@ -195,20 +188,31 @@
   left: 50%;
   width: max-content;
   margin: 0;
-  padding: 0.55rem 0.85rem;
   transform: translate(-50%, -50%);
-  border-radius: 6px;
-  color: white;
-  background: var(--color-accent);
-  font-size: 0.9rem;
-  font-weight: 700;
   opacity: 0;
-  transition: opacity 180ms ease;
+  transition:
+    opacity 180ms ease,
+    filter 180ms ease;
 }
 
 .movieCard:hover .moreDetails,
 .movieCard:focus-visible .moreDetails {
   opacity: 1;
+}
+
+.movieCard:hover .moreDetails {
+  filter: brightness(1.1);
+}
+
+.movieCard:active .moreDetails {
+  filter: brightness(1.25);
+}
+
+.heroArrow:focus-visible,
+.heroDot:focus-visible,
+.movieCard:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
 }
 
 @media (hover: none) {
@@ -220,7 +224,6 @@
 @media (max-width: 720px) {
   .heroBanner {
     height: 380px;
-    min-height: 380px;
     margin: 1rem;
   }
 
@@ -234,5 +237,13 @@
 
   .moviePoster {
     min-height: 230px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroArrow,
+  .moviePoster,
+  .moreDetails {
+    transition: none;
   }
 }

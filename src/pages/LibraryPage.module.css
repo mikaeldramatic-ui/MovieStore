@@ -15,22 +15,10 @@
   color: var(--color-text-muted);
 }
 
-.emptyLibrary a {
-  display: inline-block;
+.emptyLibrary .emptyLibraryAction {
+  display: flex;
+  width: fit-content;
   margin-top: 0.75rem;
-  padding: 0.8rem 1.2rem;
-  border-radius: 8px;
-  color: white;
-  background: var(--color-accent);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.libraryItems {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minimax(150px, 190px));
-  gap: 1.25rem;
-  margin-top: 2rem;
 }
 
 .libraryItem {
@@ -51,14 +39,19 @@
   border-color: var(--color-accent);
 }
 
+.libraryItem:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
 .poster {
   display: block;
   width: 100%;
-  aspect-ratio: 2/3;
+  aspect-ratio: 2 / 3;
   object-fit: cover;
 }
 
-.libraryItem h2,
+.libraryItem h3,
 .libraryItem p {
   margin: 0.75rem;
 }
@@ -84,16 +77,11 @@
   padding: 0.25rem 0 1rem;
 }
 
-.libraryItem h3 {
-  margin: 0.75rem;
-}
-
 .emptySection {
   color: var(--color-text-muted);
 }
 
-.rentalStatus {
-  margin: 0.35rem 0 0;
-  color: var(--color-text-muted);
+.libraryItem .rentalStatus {
+  margin: 0.35rem 0.75rem 0.75rem;
   font-size: 0.85rem;
 }

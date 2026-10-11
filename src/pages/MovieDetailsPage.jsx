@@ -13,6 +13,12 @@ import noPoster from "../assets/no_poster.svg";
 import styles from "./MovieDetailsPage.module.css";
 import { getMoviePrices } from "../services/moviePricing.js";
 
+const RETURN_LABELS = {
+  "/": "← Back to home",
+  "/library": "← Back to My Library",
+  "/cart": "← Back to cart",
+};
+
 export default function MovieDetailsPage() {
   const location = useLocation();
   const returnPath = location.state?.from;
@@ -20,8 +26,21 @@ export default function MovieDetailsPage() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("query");
   const searchGenreId = searchParams.get("genre");
+
   const dispatch = useDispatch();
   const [now, setNow] = useState(() => Date.now());
+
+  const libraryItems = useSelector((state) => state.library.items);
+  const cartItem = useSelector((state) =>
+    state.cart.items.find((item) => String(item.movie.id) === movieId),
+  );
+
+  const { movie, loading, error } = useMovieDetails(movieId);
+  const {
+    omdbMovie,
+    loading: omdbLoading,
+    error: omdbError,
+  } = useOmdbMovie(movie?.external_ids?.imdb_id);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -31,8 +50,6 @@ export default function MovieDetailsPage() {
     return () => window.clearInterval(intervalId);
   }, []);
 
-  const libraryItems = useSelector((state) => state.library.items);
-
   const libraryItem = libraryItems.find(
     (item) =>
       String(item.movie.id) === movieId &&
@@ -40,9 +57,7 @@ export default function MovieDetailsPage() {
         !item.rentalExpiresAt ||
         item.rentalExpiresAt > now),
   );
-  const cartItem = useSelector((state) =>
-    state.cart.items.find((item) => String(item.movie.id) === movieId),
-  );
+
   const moviesParams = new URLSearchParams();
 
   if (searchQuery) {
@@ -53,25 +68,11 @@ export default function MovieDetailsPage() {
     moviesParams.set("genre", searchGenreId);
   }
 
-  const moviesUrl = `/movies${
-    moviesParams.toString() ? `?${moviesParams.toString()}` : ""
-  }`;
+  const moviesQuery = moviesParams.toString();
+  const moviesUrl = `/movies${moviesQuery ? `?${moviesQuery}` : ""}`;
 
-  const returnLabels = {
-    "/": "← Back to home",
-    "/library": "← Back to My Library",
-    "/cart": "← Back to cart",
-  };
-
-  const backUrl = returnLabels[returnPath] ? returnPath : moviesUrl;
-  const backLabel = returnLabels[returnPath] ?? "← Back to movies";
-
-  const { movie, loading, error } = useMovieDetails(movieId);
-  const {
-    omdbMovie,
-    loading: omdbLoading,
-    error: omdbError,
-  } = useOmdbMovie(movie?.external_ids?.imdb_id);
+  const backUrl = RETURN_LABELS[returnPath] ? returnPath : moviesUrl;
+  const backLabel = RETURN_LABELS[returnPath] ?? "← Back to movies";
 
   if (loading) {
     return (
@@ -98,10 +99,9 @@ export default function MovieDetailsPage() {
   }
 
   const moviePrices = getMoviePrices(movie.release_date);
-
   const ratings = omdbMovie?.Ratings ?? [];
-
   const videos = movie.videos?.results ?? [];
+
   const trailer =
     videos.find(
       (video) =>
@@ -245,9 +245,9 @@ export default function MovieDetailsPage() {
 
           <div className={styles.cartActions}>
             <button
-              className={
+              className={`actionButton ${
                 cartItem?.type === "buy" ? styles.selectedCartAction : ""
-              }
+              }`}
               type="button"
               aria-pressed={cartItem?.type === "buy"}
               onClick={() =>
@@ -267,9 +267,9 @@ export default function MovieDetailsPage() {
             </button>
 
             <button
-              className={
+              className={`actionButton ${
                 cartItem?.type === "rent" ? styles.selectedCartAction : ""
-              }
+              }`}
               type="button"
               aria-pressed={cartItem?.type === "rent"}
               onClick={() =>

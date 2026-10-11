@@ -3,6 +3,18 @@ import { useEffect, useState } from "react";
 import useMovies from "../hooks/useMovies.js";
 import styles from "./HomePage.module.css";
 
+function getFeaturedBackground(movie) {
+  if (movie.backdrop_path) {
+    return `linear-gradient(90deg, rgb(8 9 12 / 82%) 0%, rgb(8 9 13 / 55%) 50%, rgb(8 9 13 / 15%) 100%), url("https://image.tmdb.org/t/p/w1280${movie.backdrop_path}")`;
+  }
+
+  if (movie.poster_path) {
+    return `linear-gradient(90deg, rgb(8 9 12 / 82%) 0%, rgb(8 9 13 / 55%) 50%, rgb(8 9 13 / 15%) 100%), url("https://image.tmdb.org/t/p/w500${movie.poster_path}")`;
+  }
+
+  return "radial-gradient(ellipse at 75% 30%, #68523c, #25232d 45%, #101116 80%)";
+}
+
 export default function HomePage() {
   const { movies, loading, error } = useMovies("", null);
   const featuredMovies = movies.slice(0, 5);
@@ -48,11 +60,7 @@ export default function HomePage() {
         <section
           className={styles.heroBanner}
           style={{
-            backgroundImage: featuredMovie.backdrop_path
-              ? `linear-gradient(90deg, rgb(8 9 12 / 82%) 0%, rgb(8 9 13 / 55%) 50%, rgb(8 9 13 / 15%) 100%), url("https://image.tmdb.org/t/p/w1280${featuredMovie.backdrop_path}")`
-              : featuredMovie.poster_path
-                ? `linear-gradient(90deg, rgb(8 9 12 / 82%) 0%, rgb(8 9 13 / 55%) 50%, rgb(8 9 13 / 15%) 100%), url("https://image.tmdb.org/t/p/w500${featuredMovie.poster_path}")`
-                : "radial-gradient(ellipse at 75% 30%, #68523c, #25232d 45%, #101116 80%)",
+            backgroundImage: getFeaturedBackground(featuredMovie),
             backgroundPosition: "center",
             backgroundSize: "cover",
           }}
@@ -65,7 +73,7 @@ export default function HomePage() {
             </p>
 
             <Link
-              className={styles.primaryButton}
+              className={`actionButton ${styles.primaryButton}`}
               to={`/movies/${featuredMovie.id}`}
               state={{ from: "/" }}
             >
@@ -133,7 +141,11 @@ export default function HomePage() {
                   }}
                 >
                   <span>{movie.title}</span>
-                  <span className={styles.moreDetails}>More details</span>
+                  <span
+                    className={`actionButton actionButtonCompact ${styles.moreDetails}`}
+                  >
+                    More details
+                  </span>
                 </div>
 
                 <p>{movie.release_date?.slice(0, 4) || "Year unavailable"}</p>

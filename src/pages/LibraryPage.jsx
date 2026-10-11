@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { removeExpiredRentals } from "../features/library/librarySlice";
 import noPoster from "../assets/no_poster.svg";
@@ -25,7 +25,12 @@ function getRentalTimeLabel(rentalExpiresAt, now) {
 }
 
 export default function LibraryPage() {
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.library.items);
   const [now, setNow] = useState(() => Date.now());
+
+  const purchasedItems = items.filter((item) => item.type === "buy");
+  const rentalItems = items.filter((item) => item.type === "rent");
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -34,10 +39,6 @@ export default function LibraryPage() {
 
     return () => window.clearInterval(intervalId);
   }, []);
-  const dispatch = useDispatch();
-  const items = useSelector((state) => state.library.items);
-  const purchasedItems = items.filter((item) => item.type === "buy");
-  const rentalItems = items.filter((item) => item.type === "rent");
 
   useEffect(() => {
     const hasExpiredRental = items.some(
@@ -87,7 +88,12 @@ export default function LibraryPage() {
       {items.length === 0 ? (
         <section className={styles.emptyLibrary}>
           <p>Your library is empty.</p>
-          <Link to="/movies">Browse movies</Link>
+          <Link
+            className={`actionButton ${styles.emptyLibraryAction}`}
+            to="/movies"
+          >
+            Browse movies
+          </Link>
         </section>
       ) : (
         <>
