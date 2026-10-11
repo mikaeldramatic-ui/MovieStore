@@ -1,83 +1,75 @@
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
+async function fetchFromTmdb(endpoint, params, errorMessage) {
+  const searchParams = new URLSearchParams({
+    ...params,
+    api_key: API_KEY,
+  });
+
+  const response = await fetch(
+    `${BASE_URL}${endpoint}?${searchParams}`,
+  );
+
+  if (!response.ok) {
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+
 export async function searchMovies(query) {
-    const params = new URLSearchParams({
-        query,
-        include_adult: "false",
-        language: "en-US",
-        api_key: API_KEY,
+  const data = await fetchFromTmdb(
+    "/search/movie",
+    {
+      query,
+      include_adult: "false",
+      language: "en-US",
+    },
+    "Could not load movies from TMDb.",
+  );
 
-    });
-
-    const response = await fetch(
-        `${BASE_URL}/search/movie?${params}`
-    );
-
-    if (!response.ok) {
-        throw new Error("Could not load movies from TMDb.");
-    }
-    const data = await response.json();
-    return data.results;
+  return data.results;
 }
 
 export async function getMovieDetails(movieId) {
-    const params = new URLSearchParams({
-        language: "en-US",
-        api_key: API_KEY,
-        append_to_response: "videos,credits,external_ids",
-    });
-
-    const response = await fetch (
-        `${BASE_URL}/movie/${movieId}?${params}`
-    );
-
-    if (!response.ok) {
-        throw new Error("Could not load movie details from TMDb.");
-    }
-
-    return response.json();
+  return fetchFromTmdb(
+    `/movie/${movieId}`,
+    {
+      language: "en-US",
+      append_to_response: "videos,credits,external_ids",
+    },
+    "Could not load movie details from TMDb.",
+  );
 }
 
 export async function getMovieGenres() {
-    const params = new URLSearchParams({
-        language: "en-US",
-        api_key: API_KEY,
-    });
+  const data = await fetchFromTmdb(
+    "/genre/movie/list",
+    { language: "en-US" },
+    "Could not load movie genres from TMDb.",
+  );
 
-    const response = await fetch (
-        `${BASE_URL}/genre/movie/list?${params}`,
-    );
-
-    if (!response.ok) {
-        throw new Error("Could not load movie genres from TMDb");
-    }
-
-    const data = await response.json();
-    return data.genres;
+  return data.genres;
 }
 
 export async function discoverMoviesByGenre(genreId = null) {
-    const params = new URLSearchParams({
-        include_adult: "false",
-        include_video: "false",
-        language: "en-US",
-        sort_by: "popularity.desc",
-        api_key: API_KEY,
-    });
+  const params = {
+    include_adult: "false",
+    include_video: "false",
+    language: "en-US",
+    sort_by: "popularity.desc",
+  };
 
-    if (genreId !== null) {
-        params.set("with_genres", String(genreId));
-    }
+  if (genreId !== null) {
+    params.with_genres = String(genreId);
+  }
 
-    const response = await fetch (
-        `${BASE_URL}/discover/movie?${params}`,
-    );
+  const data = await fetchFromTmdb(
+    "/discover/movie",
+    params,
+    "Could not load movies for this genre from TMDb.",
+  );
 
-    if (!response.ok) {
-        throw new Error("Could not load movies for this genre from TMDb.");
-    }
-
-    const data = await response.json();
-    return data.results;
+  return data.results;
 }

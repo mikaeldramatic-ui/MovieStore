@@ -15,27 +15,9 @@ export default function Navbar() {
     setSearchText(currentQuery);
   }, [currentQuery]);
 
-  function handleSearchChange(event) {
-    const value = event.target.value;
-    setSearchText(value);
-
+  function navigateToMovieSearch(value) {
     const nextParams = new URLSearchParams(searchParams);
-
-    if (value.trim()) {
-      nextParams.set("query", value);
-    } else {
-      nextParams.delete("query");
-    }
-
-    const search = nextParams.toString();
-    navigate(`/movies${search ? `?${search}` : ""}`, { replace: true });
-  }
-
-  function handleSearch(event) {
-    event.preventDefault();
-
-    const nextParams = new URLSearchParams(searchParams);
-    const query = searchText.trim();
+    const query = value.trim();
 
     if (query) {
       nextParams.set("query", query);
@@ -47,21 +29,36 @@ export default function Navbar() {
     navigate(`/movies${search ? `?${search}` : ""}`, { replace: true });
   }
 
+  function handleSearchChange(event) {
+    const value = event.target.value;
+
+    setSearchText(value);
+    navigateToMovieSearch(value);
+  }
+
+  function handleSearch(event) {
+    event.preventDefault();
+    navigateToMovieSearch(searchText);
+  }
+
   return (
     <header className={styles.header}>
       <NavLink to="/" end className={styles.logo}>
         MovieStore
       </NavLink>
 
-      <nav className={styles.nav}>
+      <nav className={styles.nav} aria-label="Main navigation">
         <NavLink to="/" end>
           Home
         </NavLink>
+
         <NavLink to="/movies">Movies</NavLink>
         <NavLink to="/library">Library</NavLink>
+
         <NavLink to="/cart">
           Cart {cartCount > 0 && <span>{cartCount}</span>}
         </NavLink>
+
         <NavLink to="/profile">Profile</NavLink>
       </nav>
 

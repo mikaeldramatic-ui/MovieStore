@@ -5,6 +5,18 @@ import useMovieGenres from "../hooks/useMovieGenres.js";
 import styles from "./MoviePage.module.css";
 import noPoster from "../assets/no_poster.svg";
 
+function getHoverBackground(movie) {
+  if (!movie) {
+    return "none";
+  }
+
+  if (movie.poster_path) {
+    return `url("https://image.tmdb.org/t/p/w1280${movie.poster_path}")`;
+  }
+
+  return "linear-gradient(135deg, #39344c, #161820)";
+}
+
 export default function MoviePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [hoveredMovie, setHoveredMovie] = useState(null);
@@ -43,12 +55,7 @@ export default function MoviePage() {
   }
 
   const detailSearch = detailParams.toString();
-
-  const hoverBackground = hoveredMovie?.poster_path
-    ? `url("https://image.tmdb.org/t/p/w1280${hoveredMovie.poster_path}")`
-    : hoveredMovie
-      ? "linear-gradient(135deg, #39344c, #161820)"
-      : "none";
+  const hoverBackground = getHoverBackground(hoveredMovie);
 
   return (
     <main
@@ -74,6 +81,7 @@ export default function MoviePage() {
         onChange={(event) => handleGenreChange(event.target.value || null)}
       >
         <option value="">All</option>
+
         {genres.map((genre) => (
           <option key={genre.id} value={genre.id}>
             {genre.name}
@@ -125,21 +133,20 @@ export default function MoviePage() {
               onFocus={() => setHoveredMovie(movie)}
               onBlur={() => setHoveredMovie(null)}
             >
-              {movie.poster_path ? (
-                <img
-                  className={styles.poster}
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={`Poster for ${movie.title}`}
-                  loading="lazy"
-                />
-              ) : (
-                <img
-                  className={styles.poster}
-                  src={noPoster}
-                  alt={`Poster unavailable for ${movie.title}`}
-                  loading="lazy"
-                />
-              )}
+              <img
+                className={styles.poster}
+                src={
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                    : noPoster
+                }
+                alt={
+                  movie.poster_path
+                    ? `Poster for ${movie.title}`
+                    : `Poster unavailable for ${movie.title}`
+                }
+                loading="lazy"
+              />
 
               <h2>{movie.title}</h2>
 
@@ -151,7 +158,11 @@ export default function MoviePage() {
                 {movie.overview || "No description available."}
               </p>
 
-              <span className={styles.moreDetails}>More details</span>
+              <span
+                className={`actionButton actionButtonCompact ${styles.moreDetails}`}
+              >
+                More details
+              </span>
             </Link>
           ))}
         </div>

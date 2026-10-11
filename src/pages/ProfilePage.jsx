@@ -34,7 +34,7 @@ export default function ProfilePage() {
           MF
         </div>
 
-        <div>
+        <div className={styles.profileInfo}>
           <h2>Welcome, Movie Fan</h2>
           <p>Your MovieStore account</p>
         </div>

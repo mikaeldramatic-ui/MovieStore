@@ -9,12 +9,13 @@ import {
 import noPoster from "../assets/no_poster.svg";
 import styles from "./CartPage.module.css";
 
+const RENTAL_PERIOD_MS = 48 * 60 * 60 * 1000;
+
 export default function CartPage() {
   const items = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
-  const RENTAL_PERIOD_MS = 48 * 60 * 60 * 1000;
 
   function handleConfirmCheckout() {
     const checkoutTime = Date.now();
@@ -24,6 +25,7 @@ export default function CartPage() {
         ? { ...item, rentalExpiresAt: checkoutTime + RENTAL_PERIOD_MS }
         : item,
     );
+
     dispatch(removeExpiredRentals(checkoutTime));
     dispatch(addItemsToLibrary(libraryItems));
     dispatch(clearCart());
@@ -32,7 +34,11 @@ export default function CartPage() {
   }
 
   const cartTotal = items.reduce((total, item) => total + (item.price ?? 0), 0);
-  const hasUnpricedItems = items.some((item) => typeof item.price !== "number");
+  const hasUnpricedItems = items.some((item) => !Number.isFinite(item.price));
+
+  const cartTotalText = hasUnpricedItems
+    ? "Price unavailable"
+    : `${cartTotal} kr`;
 
   return (
     <main className={`page ${styles.cartPage}`}>
@@ -42,12 +48,22 @@ export default function CartPage() {
         <section className={styles.orderComplete}>
           <h2>Order confirmed</h2>
           <p>Your movies have been added to your library.</p>
-          <Link to="/library">Go to My Library</Link>
+          <Link
+            className={`actionButton ${styles.orderCompleteAction}`}
+            to="/library"
+          >
+            Go to My Library
+          </Link>
         </section>
       ) : items.length === 0 ? (
         <section className={styles.emptyCart}>
           <p>Your cart is empty.</p>
-          <Link to="/movies">Browse movies</Link>
+          <Link
+            className={`actionButton ${styles.emptyCartAction}`}
+            to="/movies"
+          >
+            Browse movies
+          </Link>
         </section>
       ) : showConfirmation ? (
         <section className={styles.checkoutConfirmation}>
@@ -62,13 +78,12 @@ export default function CartPage() {
               </li>
             ))}
           </ul>
-          <p>
-            Total: {hasUnpricedItems ? "Price unavailable" : `${cartTotal} kr`}
-          </p>
 
+          <p>Total: {cartTotalText}</p>
           <p>This is a demo checkout. No payment will be made.</p>
 
           <button
+            className={`actionButton ${styles.confirmAction}`}
             type="button"
             onClick={handleConfirmCheckout}
             disabled={hasUnpricedItems}
@@ -76,7 +91,11 @@ export default function CartPage() {
             Confirm order
           </button>
 
-          <button type="button" onClick={() => setShowConfirmation(false)}>
+          <button
+            className="actionButton actionButtonSecondary"
+            type="button"
+            onClick={() => setShowConfirmation(false)}
+          >
             Back to cart
           </button>
         </section>
@@ -121,6 +140,7 @@ export default function CartPage() {
                 </div>
 
                 <button
+                  className="actionButton actionButtonSecondary actionButtonCompact"
                   type="button"
                   onClick={() => dispatch(removeFromCart(item.movie.id))}
                 >
@@ -130,12 +150,10 @@ export default function CartPage() {
             ))}
           </section>
 
-          <p>
-            Total: {hasUnpricedItems ? "Price unavailable" : `${cartTotal} kr`}
-          </p>
+          <p>Total: {cartTotalText}</p>
 
           <button
-            className={styles.checkoutButton}
+            className={`actionButton ${styles.checkoutButton}`}
             type="button"
             onClick={() => setShowConfirmation(true)}
             disabled={hasUnpricedItems}

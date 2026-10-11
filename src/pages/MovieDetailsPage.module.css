@@ -46,6 +46,11 @@
   filter: brightness(3.25);
 }
 
+.backLink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
 /* Title and metadata */
 .movieHeader {
   margin-bottom: 1.5rem;
@@ -70,10 +75,10 @@
 /* Poster, trailer, and cast */
 .movieDetails {
   display: grid;
-  grid-template-columns: minmax(180px, 260px) minmax(0, 1fr) minmax(
-      210px,
-      270px
-    );
+  grid-template-columns:
+    minmax(180px, 260px)
+    minmax(0, 1fr)
+    minmax(210px, 270px);
   align-items: start;
   gap: clamp(1.5rem, 2vw, 2rem);
 }
@@ -185,6 +190,7 @@
   overflow: hidden;
   color: var(--color-text-muted);
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .noTrailer {
@@ -251,21 +257,6 @@
   flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1.5rem;
-}
-
-.cartActions button {
-  padding: 0.8rem 1.2rem;
-  border: 0;
-  border-radius: 8px;
-  color: white;
-  background: var(--color-accent);
-  font-weight: 700;
-  cursor: pointer;
-  transition: filter 180ms ease;
-}
-
-.cartActions button:hover {
-  filter: brightness(1.12);
 }
 
 .cartStatus {

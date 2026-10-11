@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
 
+const infoLinks = ["Privacy Policy", "Terms of Use", "Cookie Policy", "Help"];
+
 export default function Footer() {
+  function handleInfoLinkClick() {
+    window.alert("It's just a school project.");
+  }
+
   return (
     <footer className={styles.footer}>
       <Link className={styles.logo} to="/">
@@ -9,18 +15,16 @@ export default function Footer() {
       </Link>
 
       <nav className={styles.infoLinks} aria-label="Information">
-        {["Privacy Policy", "Terms of Use", "Cookie Policy", "Help"].map(
-          (label) => (
-            <button
-              className={styles.infoLink}
-              key={label}
-              type="button"
-              onClick={() => window.alert("It's just a school project.")}
-            >
-              {label}
-            </button>
-          ),
-        )}
+        {infoLinks.map((label) => (
+          <button
+            className={styles.infoLink}
+            key={label}
+            type="button"
+            onClick={handleInfoLinkClick}
+          >
+            {label}
+          </button>
+        ))}
       </nav>
 
       <p className={styles.copyright}>

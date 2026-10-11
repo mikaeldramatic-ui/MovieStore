@@ -29,15 +29,14 @@ export default function useMovieDetails(movieId) {
                     setLoading(false);
                 }
             }
-            }
+        }
 
             loadMovie();
 
             return() => {
                 ignore= true;
             };
-        }, 
-        [movieId]);
+        },  [movieId]);
 
         return {movie, loading, error };
 

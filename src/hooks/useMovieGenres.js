@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getMovieGenres } from "../services/tmdb.js";
 
 export default function useMovieGenres() {
-
     const [genres, setGenres] = useState([]);
     const [loading, setLoading] = useState(true);
     const[error, setError]= useState("");

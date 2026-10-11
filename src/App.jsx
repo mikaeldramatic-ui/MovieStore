@@ -9,10 +9,10 @@ import LibraryPage from "./pages/LibraryPage.jsx";
 import Footer from "./components/Footer.jsx";
 import "./App.css";
 
-function Page({ title }) {
+function NotFoundPage() {
   return (
     <main className="page">
-      <h1>{title}</h1>
+      <h1>Page not found</h1>
     </main>
   );
 }
@@ -29,7 +29,7 @@ export default function App() {
         <Route path="/library" element={<LibraryPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="*" element={<Page title="Page not found" />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
       <Footer />

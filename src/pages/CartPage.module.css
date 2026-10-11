@@ -28,15 +28,8 @@
   color: var(--color-text-muted);
 }
 
-.emptyCart a {
-  display: inline-block;
+.emptyCartAction {
   margin-top: 0.75rem;
-  padding: 0.8rem 1.2rem;
-  border-radius: 8px;
-  color: white;
-  background: var(--color-accent);
-  font-weight: 700;
-  text-decoration: none;
 }
 
 .cartItems {
@@ -66,15 +59,6 @@
   color: var(--color-text-muted);
 }
 
-.cartItem button {
-  padding: 0.65rem 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  color: var(--color-text);
-  background: transparent;
-  cursor: pointer;
-}
-
 .cartPosterLink {
   display: block;
   width: 64px;
@@ -95,18 +79,9 @@
 }
 
 .checkoutButton,
-.checkoutConfirmation button,
-.orderComplete a {
-  display: inline-block;
+.confirmAction,
+.orderCompleteAction {
   margin-top: 1rem;
-  padding: 0.8rem 1.2rem;
-  border: 0;
-  border-radius: 8px;
-  color: white;
-  background: var(--color-accent);
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .checkoutConfirmation,
@@ -126,9 +101,6 @@
 
 .checkoutConfirmation button + button {
   margin-left: 0.75rem;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  background: transparent;
 }
 
 .checkoutConfirmation p,
