@@ -2,7 +2,7 @@
 
 A React app for exploring movies, renting or buying them digitally, and collecting them in a personal library.
 
-**Live demo:** _add your link here_
+   **Live demo:** https://moviestore-mikaele.netlify.app
 
 ## Features
 
