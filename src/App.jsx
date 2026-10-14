@@ -1,41 +1,38 @@
-import { NavLink, Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import MoviePage from "./pages/MoviePage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
+import MovieDetailsPage from "./pages/MovieDetailsPage.jsx";
+import CartPage from "./pages/CartPage.jsx";
+import LibraryPage from "./pages/LibraryPage.jsx";
+import Footer from "./components/Footer.jsx";
+import "./App.css";
 
-function Page({ title }) {
+function NotFoundPage() {
   return (
     <main className="page">
-      <h1>{title}</h1>
+      <h1>Page not found</h1>
     </main>
   );
 }
 
 export default function App() {
-  const cartCount = useSelector((state) => state.cart.items.lenght);
-
   return (
     <div className="app">
-      <header className="app-header">
-        <NavLink to="/" className="logo">
-          MovieStore
-        </NavLink>
-
-        <nav className="app-nav">
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/movies">Movies</NavLink>
-          <NavLink to="/library">Library</NavLink>
-          <NavLink to="/cart">Cart</NavLink>
-          <NavLink to="/profile">Profile</NavLink>
-        </nav>
-      </header>
+      <Navbar />
 
       <Routes>
-        <Route path="/" element={<Page title="Welcome to MovieStore" />} />
-        <Route path="/movies" element={<Page title="Movies" />} />
-        <Route path="/library" element={<Page title="Library" />} />
-        <Route path="/cart" element={<Page title="Cart" />} />
-        <Route path="/profile" element={<Page title="My profile" />} />
-        <Route path="/*" element={<Page title="Page Cannot find" />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/movies" element={<MoviePage />} />
+        <Route path="/movies/:movieId" element={<MovieDetailsPage />} />
+        <Route path="/library" element={<LibraryPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
+
+      <Footer />
     </div>
   );
 }
