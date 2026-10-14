@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import tmdbLogo from "../assets/tmdb-logo.svg";
 import styles from "./Footer.module.css";
 
 const infoLinks = ["Privacy Policy", "Terms of Use", "Cookie Policy", "Help"];
@@ -26,6 +27,16 @@ export default function Footer() {
           </button>
         ))}
       </nav>
+
+      <div className={styles.attribution}>
+        <a href="https://www.themoviedb.org" target="_blank" rel="noreferrer">
+          <img className={styles.tmdbLogo} src={tmdbLogo} alt="TMDB" />
+        </a>
+        <p>
+          This product uses the TMDB API but is not endorsed or certified by
+          TMDB. Ratings provided by OMDb.
+        </p>
+      </div>
 
       <p className={styles.copyright}>
         © {new Date().getFullYear()} MovieStore
